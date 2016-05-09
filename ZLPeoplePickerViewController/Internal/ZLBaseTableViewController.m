@@ -161,11 +161,25 @@
     }
 
     APContact *contact = [self contactForRowAtIndexPath:indexPath];
+    
+//    if(contact.emails.count> 1)
+//    {
+//        for(int i=0;i<contact.emails.count;i++)
+//        {
+//            NSLog(@"%@",[[contact.emails objectAtIndex:i] valueForKey:@"address"]);
+//        }
+//    }
+
+    
     [self configureCell:cell forContact:contact];
 
-    if ([self.selectedPeople containsObject:contact.recordID]) {
+    if ([self.selectedPeople containsObject:contact.recordID])
+    {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    } else {
+        
+    }
+    else
+    {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
@@ -173,7 +187,8 @@
 }
 
 #pragma mark - ()
-- (void)configureCell:(UITableViewCell *)cell forContact:(APContact *)contact {
+- (void)configureCell:(UITableViewCell *)cell forContact:(APContact *)contact
+{
     NSString *stringToHightlight =
         contact.lastName ? contact.lastName : contact.compositeName;
     NSRange rangeToHightlight =
@@ -185,7 +200,8 @@
     [attributedString addAttribute:NSFontAttributeName
                              value:[UIFont boldSystemFontOfSize:18]
                              range:rangeToHightlight];
-    if (![self shouldEnableCellforContact:contact]) {
+    if (![self shouldEnableCellforContact:contact])
+    {
         [attributedString addAttribute:NSForegroundColorAttributeName
                                  value:[UIColor grayColor]
                                  range:NSMakeRange(0, attributedString.length)];

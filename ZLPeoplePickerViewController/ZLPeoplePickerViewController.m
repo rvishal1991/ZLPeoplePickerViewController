@@ -139,10 +139,19 @@
     ZLPeoplePickerViewController *peoplePicker =
         [[ZLPeoplePickerViewController alloc] init];
     [navController pushViewController:peoplePicker animated:NO];
-    peoplePicker.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
-        initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                             target:peoplePicker
-                             action:@selector(doneButtonAction:)];
+   
+   //Added by Vishal
+    
+//    peoplePicker.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+//        initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+//                             target:peoplePicker
+//                             action:@selector(doneButtonAction:)];
+    
+    peoplePicker.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Send" style:UIBarButtonSystemItemDone target:peoplePicker action:@selector(doneButtonAction:)];
+    
+    
+     peoplePicker.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonSystemItemDone target:peoplePicker action:@selector(cancelButtonAction:)];
+    
     peoplePicker.delegate = parentViewController;
     [parentViewController presentViewController:navController
                                        animated:YES
@@ -153,6 +162,11 @@
 - (void)doneButtonAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
     [self invokeReturnDelegate];
+}
+//Added by Vishal
+
+- (void)cancelButtonAction:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)refreshControlAction:(UIRefreshControl *)aRefreshControl {
@@ -217,7 +231,9 @@
 
     APContact *contact = [self contactForRowAtIndexPath:indexPath];
 
-    if (![tableView isEqual:self.tableView]) {
+
+    if (![tableView isEqual:self.tableView])
+    {
         contact = [(ZLResultsTableViewController *)
                        self.searchController.searchResultsController
             contactForRowAtIndexPath:indexPath];
@@ -234,6 +250,34 @@
         [self.delegate peoplePickerViewController:self
                                   didSelectPerson:contact.recordID];
     }
+    
+    
+    //added by Vishal
+
+    
+    
+//    if (self.delegate &&
+//        [self.delegate
+//         respondsToSelector:@selector(peoplePickerViewController:
+//                                      didSelectPersonContact:)]) {
+//             [self.delegate peoplePickerViewController:self
+//                                       didSelectPersonContact:contact];
+//         }
+//
+    
+    UITableViewCell *cellNew = [tableView cellForRowAtIndexPath:indexPath];
+    
+    
+    if (self.delegate &&
+        [self.delegate
+         respondsToSelector:@selector(peoplePickerViewController:
+                                      didSelectPersonContact:ZLpeoplepickerCell:)]) {
+             [self.delegate peoplePickerViewController:self
+                                didSelectPersonContact:contact ZLpeoplepickerCell:cellNew];
+         }
+    
+
+    
 
     if ([self.selectedPeople containsObject:contact.recordID]) {
         [self.selectedPeople removeObject:contact.recordID];
@@ -242,7 +286,6 @@
             [self.selectedPeople addObject:contact.recordID];
         }
     }
-
     //    NSLog(@"heree");
 
     [tableView reloadData];

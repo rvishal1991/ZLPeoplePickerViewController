@@ -23,6 +23,11 @@
 - (void)peoplePickerViewController:(nonnull ZLPeoplePickerViewController *)peoplePicker
                    didSelectPerson:(nonnull NSNumber * )recordId;
 
+//added by Vishal
+
+- (void)peoplePickerViewController:(nonnull ZLPeoplePickerViewController *)peoplePicker
+            didSelectPersonContact:(nonnull APContact * )contact ZLpeoplepickerCell:(nonnull UITableViewCell *)cell;
+
 /**
  *  Tells the delegate that the people picker has returned and, if the type is
  *multiple, selected contacts.
